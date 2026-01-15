@@ -1,17 +1,12 @@
 name: Notion Collector
 
 on:
-  # 每周日 00:00 UTC (北京时间周日 08:00) 运行
+  # 测试：每 5 分钟执行一次（测试完成后改回每周日）
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: '*/5 * * * *'
 
   # 允许手动触发
   workflow_dispatch:
-
-  # Push 时也可手动触发（用于测试）
-  push:
-    branches:
-      - main
 
 jobs:
   collect:
