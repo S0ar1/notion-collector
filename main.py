@@ -5,7 +5,7 @@ from datetime import datetime
 from notion_client import APIResponseError
 
 from config import Config
-from notion_client import NotionCollector
+from notion_collector import NotionCollector
 from processor import DataProcessor
 from output import OutputManager
 

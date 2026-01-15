@@ -7,7 +7,17 @@
       "Bash(git config:*)",
       "Bash(gh auth status:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(unzip:*)",
+      "Bash(pip install:*)",
+      "Bash(export:*)",
+      "Bash(python:*)"
     ]
   }
 }
