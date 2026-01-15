@@ -1,0 +1,7 @@
+{
+  "summary": {
+    "total_entries": 0,
+    "note": "MCP 工具返回的是格式化文本，需要 Integration Token 才能获取原始 JSON 数据"
+  },
+  "message": "请按照上述步骤完成 Integration 授权后重试"
+}

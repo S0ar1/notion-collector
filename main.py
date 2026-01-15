@@ -20,13 +20,13 @@ def main():
         processor = DataProcessor()
         output_manager = OutputManager()
 
-        # 拉取数据
-        print("正在拉取 Daily Log 数据...")
-        daily_logs = collector.get_daily_logs(days=7)
+        # 拉取数据（拉取所有历史数据）
+        print("正在拉取 Daily Log 数据（全部历史）...")
+        daily_logs = collector.get_daily_logs(days=3650)  # 10年
         print(f"已获取 {len(daily_logs)} 条 Daily Log")
 
-        print("正在拉取 Weekly Log 数据...")
-        weekly_logs = collector.get_weekly_logs(weeks=4)
+        print("正在拉取 Weekly Log 数据（全部历史）...")
+        weekly_logs = collector.get_weekly_logs(weeks=520)  # 10年
         print(f"已获取 {len(weekly_logs)} 条 Weekly Log")
 
         # 处理数据

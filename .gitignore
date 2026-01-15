@@ -28,9 +28,6 @@ env/
 # Environment variables
 .env
 
-# Output
-output/
-
 # IDE
 .vscode/
 .idea/
