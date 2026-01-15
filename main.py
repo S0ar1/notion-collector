@@ -2,7 +2,7 @@
 
 import sys
 from datetime import datetime
-from notion_client import APIResponseError
+import requests
 
 from config import Config
 from notion_collector import NotionCollector
@@ -55,9 +55,11 @@ def main():
         print("请检查 .env 文件中的配置是否正确。")
         return 1
 
-    except APIResponseError as e:
+    except requests.exceptions.HTTPError as e:
         print(f"Notion API 错误: {e}", file=sys.stderr)
-        print(f"错误详情: {e.body}")
+        if e.response is not None:
+            print(f"状态码: {e.response.status_code}")
+            print(f"响应: {e.response.text}")
         return 1
 
     except Exception as e:

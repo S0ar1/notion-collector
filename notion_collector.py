@@ -1,7 +1,7 @@
 """Notion 客户端模块 - 封装 Notion API 调用"""
 
+import requests
 from typing import List, Dict, Any, Optional
-from notion_client import Client as NotionClient
 from datetime import datetime, timedelta
 from config import Config
 
@@ -12,19 +12,22 @@ class NotionCollector:
     def __init__(self):
         """初始化 Notion 客户端"""
         Config.validate()
-        self.client = NotionClient(auth=Config.NOTION_TOKEN)
+        self.token = Config.NOTION_TOKEN
         self.daily_db_id = Config.DAILY_LOG_DATABASE_ID.replace("-", "")
         self.weekly_db_id = Config.WEEKLY_LOG_DATABASE_ID.replace("-", "")
+        self.base_url = "https://api.notion.com/v1"
+        self.headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Notion-Version": "2022-06-28",
+            "Content-Type": "application/json",
+        }
 
-    def query_database(
-        self, database_id: str, filter: Optional[Dict[str, Any]] = None
-    ) -> List[Dict[str, Any]]:
+    def _query_database(self, database_id: str) -> List[Dict[str, Any]]:
         """
-        查询数据库
+        查询数据库（获取所有数据）
 
         Args:
             database_id: 数据库 ID（不含连字符）
-            filter: Notion 过滤条件
 
         Returns:
             数据库条目列表
@@ -34,13 +37,21 @@ class NotionCollector:
         start_cursor = None
 
         while has_more:
-            response = self.client.blocks.children.list(
-                block_id=database_id,
-                start_cursor=start_cursor,
+            body = {}
+            if start_cursor:
+                body["start_cursor"] = start_cursor
+
+            response = requests.post(
+                f"{self.base_url}/databases/{database_id}/query",
+                headers=self.headers,
+                json=body,
             )
-            results.extend(response.get("results", []))
-            has_more = response.get("has_more", False)
-            start_cursor = response.get("next_cursor")
+            response.raise_for_status()
+            data = response.json()
+
+            results.extend(data.get("results", []))
+            has_more = data.get("has_more", False)
+            start_cursor = data.get("next_cursor")
 
         return results
 
@@ -54,19 +65,7 @@ class NotionCollector:
         Returns:
             Daily Log 条目列表
         """
-        # 使用 database.query 获取数据库内容
-        results = []
-        has_more = True
-        start_cursor = None
-
-        while has_more:
-            response = self.client.databases.query(
-                database_id=self.daily_db_id,
-                start_cursor=start_cursor,
-            )
-            results.extend(response.get("results", []))
-            has_more = response.get("has_more", False)
-            start_cursor = response.get("next_cursor")
+        results = self._query_database(self.daily_db_id)
 
         # 解析并过滤数据
         parsed_logs = []
@@ -101,18 +100,7 @@ class NotionCollector:
         Returns:
             Weekly Log 条目列表
         """
-        results = []
-        has_more = True
-        start_cursor = None
-
-        while has_more:
-            response = self.client.databases.query(
-                database_id=self.weekly_db_id,
-                start_cursor=start_cursor,
-            )
-            results.extend(response.get("results", []))
-            has_more = response.get("has_more", False)
-            start_cursor = response.get("next_cursor")
+        results = self._query_database(self.weekly_db_id)
 
         # 解析并过滤数据
         parsed_logs = []
@@ -154,27 +142,38 @@ class NotionCollector:
             "last_edited_time": item.get("last_edited_time"),
         }
 
-        # 解析 Name
-        name_prop = properties.get("Name", {})
+        # 解析名称 (title, 中文名称)
+        name_prop = properties.get("名称", {})
+        if not name_prop:
+            name_prop = properties.get("Name", {})
         if name_prop.get("type") == "title":
             title_data = name_prop.get("title", [])
             if title_data:
                 result["name"] = title_data[0].get("plain_text", "")
 
-        # 解析 Date
-        date_prop = properties.get("Date", {})
+        # 解析 Logdate (date)
+        date_prop = properties.get("Logdate", {})
+        if not date_prop:
+            date_prop = properties.get("Date", {})
         if date_prop.get("type") == "date":
             date_data = date_prop.get("date", {})
             if date_data:
                 result["date"] = date_data.get("start")
 
-        # 解析 Relations
-        relation_fields = ["Concepts", "Strategies", "Experiments", "Insights", "Codebase"]
-        for field in relation_fields:
-            prop = properties.get(field)
-            if prop and prop.get("type") == "relation":
-                relations = prop.get("relation", [])
-                result[field.lower()] = [r.get("id") for r in relations]
+        # 解析 Week Task (rollup)
+        week_task_prop = properties.get("Week Task", {})
+        if week_task_prop and week_task_prop.get("type") == "rollup":
+            rollup_data = week_task_prop.get("rollup", {})
+            if rollup_data:
+                rollup_prop = rollup_data.get("array")
+                if rollup_prop and rollup_prop.get("type") == "text":
+                    result["week_task"] = rollup_prop.get("plain_text", "")
+
+        # 解析 Weekly Log (relation)
+        relation_prop = properties.get("Weekly Log", {})
+        if relation_prop and relation_prop.get("type") == "relation":
+            relations = relation_prop.get("relation", [])
+            result["weekly_log_ids"] = [r.get("id") for r in relations]
 
         return result if result.get("name") else None
 
