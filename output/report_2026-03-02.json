@@ -1,7 +1,7 @@
 {
   "daily_logs": {
     "summary": {
-      "total_entries": 31,
+      "total_entries": 32,
       "concepts_count": 0,
       "strategies_count": 0,
       "experiments_count": 0,
@@ -9,6 +9,21 @@
       "codebase_count": 0
     },
     "by_date": [
+      {
+        "date": "2026-03-02",
+        "entries": [
+          {
+            "id": "31793581-c8dc-807a-ae3a-e5705b580daf",
+            "url": "https://www.notion.so/31793581c8dc807aae3ae5705b580daf",
+            "created_time": "2026-03-02T02:55:00.000Z",
+            "last_edited_time": "2026-03-02T02:56:00.000Z",
+            "name": "每日计划",
+            "date": "2026-03-02",
+            "weekly_log_ids": []
+          }
+        ],
+        "count": 1
+      },
       {
         "date": "2026-02-28",
         "entries": [
@@ -483,12 +498,12 @@
       "codebase": []
     },
     "metadata": {
-      "total_count": 31,
+      "total_count": 32,
       "date_range": {
         "start": "2025-11-24",
-        "end": "2026-02-28"
+        "end": "2026-03-02"
       },
-      "generated_at": "2026-03-02T01:17:35.097938"
+      "generated_at": "2026-03-02T03:39:06.130269"
     }
   },
   "weekly_logs": {
@@ -501,11 +516,11 @@
         "start": null,
         "end": null
       },
-      "generated_at": "2026-03-02T01:17:35.097952"
+      "generated_at": "2026-03-02T03:39:06.130282"
     }
   },
   "report_metadata": {
-    "generated_at": "2026-03-02T01:17:35.097976",
+    "generated_at": "2026-03-02T03:39:06.130286",
     "report_type": "combined"
   }
 }
