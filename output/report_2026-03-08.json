@@ -518,7 +518,7 @@
         "start": "2025-11-24",
         "end": "2026-03-04"
       },
-      "generated_at": "2026-03-08T14:11:24.230682"
+      "generated_at": "2026-03-08T14:43:09.561897"
     }
   },
   "weekly_logs": {
@@ -531,11 +531,11 @@
         "start": null,
         "end": null
       },
-      "generated_at": "2026-03-08T14:11:24.230695"
+      "generated_at": "2026-03-08T14:43:09.561911"
     }
   },
   "report_metadata": {
-    "generated_at": "2026-03-08T14:11:24.230698",
+    "generated_at": "2026-03-08T14:43:09.561914",
     "report_type": "combined"
   }
 }
