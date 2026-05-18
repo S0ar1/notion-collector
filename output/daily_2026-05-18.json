@@ -1,6 +1,6 @@
 {
   "summary": {
-    "total_entries": 60,
+    "total_entries": 61,
     "concepts_count": 0,
     "strategies_count": 0,
     "experiments_count": 0,
@@ -8,6 +8,21 @@
     "codebase_count": 0
   },
   "by_date": [
+    {
+      "date": "2026-05-18",
+      "entries": [
+        {
+          "id": "36493581-c8dc-80e9-bfea-f0dc0bd5154e",
+          "url": "https://www.notion.so/36493581c8dc80e9bfeaf0dc0bd5154e",
+          "created_time": "2026-05-18T01:54:00.000Z",
+          "last_edited_time": "2026-05-18T03:26:00.000Z",
+          "name": "每日计划",
+          "date": "2026-05-18",
+          "weekly_log_ids": []
+        }
+      ],
+      "count": 1
+    },
     {
       "date": "2026-05-14",
       "entries": [
@@ -917,11 +932,11 @@
     "codebase": []
   },
   "metadata": {
-    "total_count": 60,
+    "total_count": 61,
     "date_range": {
       "start": "2025-11-24",
-      "end": "2026-05-14"
+      "end": "2026-05-18"
     },
-    "generated_at": "2026-05-18T01:31:00.520547"
+    "generated_at": "2026-05-18T05:50:57.065173"
   }
 }
